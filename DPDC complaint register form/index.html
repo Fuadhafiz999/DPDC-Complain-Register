@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DPDC Complaint Registration</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a73e8">
+  <link rel="icon" href="icon-192.png" type="image/png">
+
+</head>
+<body>
+  <div class="main_body">
+    <div class="main_form">
+      <h2>ডিপিডিসি অভিযোগ রেজিস্ট্রেশন ফর্ম</h2>
+      <form id="complaintForm">
+        <p>কাস্টমারের নাম:</p>
+        <input type="text" name="name" placeholder="কাস্টমারের নাম" required><br><br>
+        <p>মোবাইল নং:</p>
+        <input type="text" name="mobile" placeholder="+88 01xxxxxxxxx" required><br><br>
+        <p>কাস্টমারের ঠিকানা:</p>
+        <input type="text" name="address" placeholder="কাস্টমারের ঠিকানা" required><br><br>
+        <p>কাস্টমার আইডি নং:</p>
+        <input type="text" name="id" placeholder="কাস্টমার আইডি নং" required><br><br>
+        <p>আপনার অভিযোগটি বিস্তারিত লিখুন:</p>
+        <textarea name="details" placeholder="অভিযোগ লিখুন..." rows="5" required></textarea>
+
+        <div class="btn-group">
+          <button type="submit">অভিযোগ জমা দিন</button>
+          <a href="https://docs.google.com/spreadsheets/d/1eylJ2jyA_Fit_SpVmJ7g5F-HPDVlVsi32GN_5KA1yJg/view" target="_blank">
+            <button type="button">অভিযোগ অনুসন্ধান করুন</button>
+          </a>
+        </div>
+        
+      </form>
+      </div>
+  </div>
+
+  <p id="response"></p>
+
+  <script>
+    document.getElementById('complaintForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        mobile: form.mobile.value,
+        address: form.address.value,
+        id: form.id.value,
+        details: form.details.value
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbz2H8U_t-iQaGOiS4kIrL-z53gyhOEL_vpQw8_6VGMDV6xGtvVFVheRpofBysEyudjZ/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(msg => {
+        document.getElementById("response").innerText = msg;
+        form.reset();
+      });
+    });
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log("Service Worker registered!"));
+    }
+  </script>
+  
+</body>
+</html>
